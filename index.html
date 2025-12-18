@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robô H1 - Volume - Dashboard Informativo</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a3c34;
+            --secondary-color: #2ecc71;
+            --accent-color: #3498db;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #f8f9fa;
+            --dark-color: #2c3e50;
+            --gray-color: #7f8c8d;
+            --card-bg: #ffffff;
+            --body-bg: #f5f7fa;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--body-bg);
+            color: var(--dark-color);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2c3e50 100%);
+            color: white;
+            padding: 2rem 0;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .robot-icon {
+            font-size: 3.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .version-badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        /* Card Styles */
+        .info-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            border: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            color: var(--secondary-color);
+        }
+        
+        /* Config Section */
+        .config-item {
+            border-left: 4px solid var(--accent-color);
+            padding-left: 1.25rem;
+            margin-bottom: 1.75rem;
+            background-color: rgba(52, 152, 219, 0.05);
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .config-name {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .config-value {
+            font-family: 'Roboto Mono', monospace;
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .config-description {
+            color: var(--gray-color);
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* Badge Styles */
+        .badge {
+            padding: 0.35rem 0.75rem;
+            font-weight: 500;
+            border-radius: 6px;
+        }
+        
+        .badge-active {
+            background-color: rgba(46, 204, 113, 0.15);
+            color: var(--secondary-color);
+        }
+        
+        .badge-inactive {
+            background-color: rgba(231, 76, 60, 0.15);
+            color: var(--danger-color);
+        }
+        
+        /* Dashboard Simulation */
+        .dashboard {
+            background: linear-gradient(135deg, #1a3c34 0%, #2c3e50 100%);
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dashboard-title {
+            color: white;
+            margin-bottom: 0;
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Tabs */
+        .nav-tabs {
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--gray-color);
+            font-weight: 500;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: white;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 1.5rem 0;
+            }
+            
+            .info-card {
+                padding: 1.25rem;
+            }
+        }
+        
+        /* Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="robot-icon me-3">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div>
+                            <h1 class="mb-1">Robô H1 - Volume (MT5)</h1>
+                            <p class="lead mb-2">Estratégia com EMA Configurável - Dashboard Profissional</p>
+                            <span class="version-badge">Versão 2.0</span>
+                        </div>
+                    </div>
+                    <p class="mb-0">Robô de trading automático para MetaTrader 5 que opera no timeframe H1 com EMA totalmente configurável e gestão de risco avançada.</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="mt-3 mt-md-0">
+                        <p class="mb-1"><i class="fas fa-calendar-alt me-2"></i>Data: 18/12/2025</p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button" role="tab">Configurações</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="how-tab" data-bs-toggle="tab" data-bs-target="#how" type="button" role="tab">Como Funciona</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="fixed-tab" data-bs-toggle="tab" data-bs-target="#fixed" type="button" role="tab">Parâmetros Fixos</button>
+            </li>
+        </ul>
+
+        <!-- Tabs Content -->
+        <div class="tab-content" id="myTabContent">
+            <!-- Config Tab -->
+            <div class="tab-pane fade show active" id="config" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="info-card">
+                            <h3 class="card-title"><i class="fas fa-sliders-h"></i>Configurações Gerais</h3>
+                            <p class="mb-3">Estas são as principais configurações que você pode ajustar para personalizar a estratégia do robô.</p>
+                            
+                            <div class="config-item">
+                                <div class="config-name">Tamanho do Lote (Lots)</div>
+                                <div class="config-value">0.05</div>
+                                <div class="config-description">Define o volume (tamanho) de cada operação. Valores menores reduzem o risco, enquanto valores maiores aumentam o potencial de lucro (e risco).</div>
+                            </div>
+                            
+                            <div class="config-item">
+                                <div class="config-name">Período da EMA (EMAPeriod)</div>
+                                <div class="config-value">200</div>
+                                <div class="config-description">Período da Média Móvel Exponencial utilizada como referência para as entradas. Valores mais altos criam uma linha mais suave e lenta, valores mais baixos são mais sensíveis às variações de preço.</div>
+                            </div>
+                            
+                            <div class="config-item">
+                                <div class="config-name">Ativar SMC (EnableSMC)</div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge badge-active">ATIVADO</span>
+                                </div>
+                                <div class="config-description">Ativa a validação de Smart Money Concepts (SMC) que identifica pontos de pivô para confirmar continuações de tendência. Quando ativado, aumenta a confiabilidade dos sinais.</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="info-card">
+                            <h3 class="card-title"><i class="fas fa-shield-alt"></i>Gestão de Risco</h3>
+                            <p class="mb-3">Configurações para proteger seu capital e gerenciar o risco das operações.</p>
+                            
+                            <div class="config-item">
+                                <div class="config-name">Ativar Stop Loss (EnableStopLoss)</div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge badge-active">ATIVADO</span>
+                                </div>
+                                <div class="config-description">Habilita o Stop Loss por valor. Quando ativado, cada operação terá um ponto de saída automático para limitar perdas.</div>
+                            </div>
+                            
+                            <div class="config-item">
+                                <div class="config-name">Stop Loss em USC (StopLossUSC)</div>
+                                <div class="config-value">5000</div>
+                                <div class="config-description">Valor máximo de perda por operação em USC (100 USC = 1 USD). Exemplo: 5000 USC = 50 USD de perda máxima por trade. Este é um Stop Loss baseado em valor, não em pontos.</div>
+                            </div>
+                            
+                            <div class="config-item">
+                                <div class="config-name">Usar Trailing Stop (UseTrailingStop)</div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="badge badge-inactive">DESATIVADO</span>
+                                </div>
+                                <div class="config-description">Quando ativado, o Stop Loss "anda" (trailing) seguindo o preço na direção favorável, protegendo lucros à medida que a operação se move a seu favor.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <h3 class="card-title"><i class="fas fa-lightbulb"></i>Como Ajustar</h3>
+                            <p>Para modificar estas configurações:</p>
+                            <ol class="ps-3">
+                                <li class="mb-2">No MetaTrader 5, clique com o botão direito no robô na janela "Terminal"</li>
+                                <li class="mb-2">Selecione "Propriedades" ou "Configurações"</li>
+                                <li class="mb-2">Altere os valores conforme sua estratégia e tolerância ao risco</li>
+                                <li>Clique em "OK" para aplicar as alterações</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- How it Works Tab -->
+            <div class="tab-pane fade" id="how" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="info-card">
+                            <h3 class="card-title"><i class="fas fa-play-circle"></i>Como o Robô Funciona</h3>
+                            <p>O Robô H1 opera no timeframe de 1 hora (H1) e segue uma estratégia baseada em quebra de estrutura com confirmação de volume e análise SMC.</p>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-4 mb-4">
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-chart-bar fa-3x text-primary"></i>
+                                        </div>
+                                        <h5>1. Análise da Vela</h5>
+                                        <p class="mb-0">O robô aguarda o fechamento de uma vela H1 e verifica se é um "candle forte" (corpo maior que 30% do range total).</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4 mb-4">
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-wave-square fa-3x text-secondary"></i>
+                                        </div>
+                                        <h5>2. Posição em Relação à EMA</h5>
+                                        <p class="mb-0">Verifica se o fechamento da vela está acima ou abaixo da EMA configurável, indicando tendência.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4 mb-4">
+                                    <div class="text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-filter fa-3x text-accent"></i>
+                                        </div>
+                                        <h5>3. Filtros Adicionais</h5>
+                                        <p class="mb-0">Aplica filtros de volume (20% acima da média) e validação SMC (quando ativado) para confirmar o sinal.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h5>Fluxo de Operação</h5>
+                                <div class="d-flex flex-wrap justify-content-between align-items-center my-4">
+                                    <div class="step text-center">
+                                        <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">1</div>
+                                        <p class="mt-2 mb-0">Aguarda nova vela H1</p>
+                                    </div>
+                                    <div class="step-arrow d-none d-md-block">
+                                        <i class="fas fa-arrow-right text-muted fa-lg"></i>
+                                    </div>
+                                    <div class="step text-center">
+                                        <div class="step-number bg-secondary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">2</div>
+                                        <p class="mt-2 mb-0">Analisa condições de entrada</p>
+                                    </div>
+                                    <div class="step-arrow d-none d-md-block">
+                                        <i class="fas fa-arrow-right text-muted fa-lg"></i>
+                                    </div>
+                                    <div class="step text-center">
+                                        <div class="step-number bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">3</div>
+                                        <p class="mt-2 mb-0">Executa trade com SL/TP</p>
+                                    </div>
+                                    <div class="step-arrow d-none d-md-block">
+                                        <i class="fas fa-arrow-right text-muted fa-lg"></i>
+                                    </div>
+                                    <div class="step text-center">
+                                        <div class="step-number bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">4</div>
+                                        <p class="mt-2 mb-0">Gerencia posição aberta</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info mt-4">
+                                <h6><i class="fas fa-info-circle me-2"></i>Importante</h6>
+                                <p class="mb-0">O robô opera apenas no símbolo atual do gráfico onde está anexado. Ele verifica as condições a cada nova vela H1 (aproximadamente a cada hora). As operações são executadas apenas se todas as condições forem atendidas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fixed Parameters Tab -->
+            <div class="tab-pane fade" id="fixed" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="info-card">
+                            <h3 class="card-title"><i class="fas fa-lock"></i>Parâmetros Fixos do Robô</h3>
+                            <p class="mb-3">Estes parâmetros são definidos pelo desenvolvedor e não podem ser alterados pelo usuário. Eles garantem o funcionamento correto da estratégia.</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="mt-3">Configurações Gerais Fixas</h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Percentual mínimo do corpo do candle</span>
+                                            <span class="badge bg-secondary">30%</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Período para identificar pivôs (SMC)</span>
+                                            <span class="badge bg-secondary">5</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Multiplicador de volume para entradas</span>
+                                            <span class="badge bg-secondary">1.2x</span>
+                                        </li>
+                                    </ul>
+                                    
+                                    <h5 class="mt-4">Configurações Visuais Fixas</h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Mostrar linha da EMA no gráfico</span>
+                                            <span class="badge badge-active">SIM</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Cor da linha da EMA</span>
+                                            <span class="badge" style="background-color: #32CD32; color: white">LimeGreen</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h5 class="mt-3">Gestão de Risco Avançada Fixa</h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Ativar Take Profit</span>
+                                            <span class="badge badge-active">SIM</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Take Profit em pontos</span>
+                                            <span class="badge bg-secondary">500</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Máximo de trades por dia</span>
+                                            <span class="badge bg-secondary">100</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Spread máximo permitido (pontos)</span>
+                                            <span class="badge bg-secondary">100</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Permitir múltiplas entradas</span>
+                                            <span class="badge badge-inactive">NÃO</span>
+                                        </li>
+                                    </ul>
+                                    
+                                    <h5 class="mt-4">Trailing Stop Fixo (quando ativado)</h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Pontos para iniciar trailing stop</span>
+                                            <span class="badge bg-secondary">150</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Passo do trailing stop</span>
+                                            <span class="badge bg-secondary">50</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-secondary mt-4">
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Aviso</h6>
+                                <p class="mb-0">Estes parâmetros foram otimizados pelo desenvolvedor para o funcionamento ideal da estratégia. Alterá-los manualmente no código pode comprometer o desempenho do robô.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Robô H1 - Volume (MT5) v2.0 </p>
+            <p class="mb-0">Este é um dashboard informativo. As configurações reais devem ser ajustadas no MetaTrader 5.</p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Dashboard simulation with realistic values
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update dashboard values
+            function updateDashboard() {
+                // Simulate dynamic values
+                const emaPeriod = 200; // Default from robot
+                document.getElementById('currentEMA').textContent = `EMA${emaPeriod}`;
+                
+                // Simulate daily profit between -50 and +150 USD
+                const dailyProfit = (Math.random() * 200 - 50).toFixed(2);
+                document.getElementById('dailyProfit').textContent = `${dailyProfit >= 0 ? '+' : ''}${dailyProfit} USD`;
+                document.getElementById('dailyProfit').style.color = dailyProfit >= 0 ? '#2ecc71' : '#e74c3c';
+                
+                // Simulate daily trades between 0 and 10
+                const dailyTrades = Math.floor(Math.random() * 11);
+                document.getElementById('dailyTrades').textContent = dailyTrades;
+                
+                // Simulate win rate between 40% and 80%
+                const winRate = (40 + Math.random() * 40).toFixed(1);
+                document.getElementById('winRate').textContent = `${winRate}%`;
+                
+                // Update SMC status based on robot settings
+                const enableSMC = true; // From robot settings
+                const smcStatus = document.getElementById('smcStatus');
+                smcStatus.textContent = enableSMC ? 'SMC Ativo' : 'SMC Inativo';
+                smcStatus.className = enableSMC ? 'badge badge-active me-2' : 'badge badge-inactive me-2';
+                
+                // Update Stop Loss status
+                const enableSL = true; // From robot settings
+                const slStatus = document.getElementById('slStatus');
+                slStatus.textContent = enableSL ? 'Stop Loss Ativo' : 'Stop Loss Inativo';
+                slStatus.className = enableSL ? 'badge badge-active me-2' : 'badge badge-inactive me-2';
+                
+                // Update Trailing Stop status
+                const enableTS = false; // From robot settings
+                const tsStatus = document.getElementById('tsStatus');
+                tsStatus.textContent = enableTS ? 'Trailing Stop Ativo' : 'Trailing Stop Inativo';
+                tsStatus.className = enableTS ? 'badge badge-active' : 'badge badge-inactive';
+                
+                // Calculate next check time (simulate H1 candle close)
+                const now = new Date();
+                const nextHour = new Date(now);
+                nextHour.setHours(nextHour.getHours() + 1);
+                nextHour.setMinutes(0);
+                nextHour.setSeconds(0);
+                
+                const timeDiff = nextHour - now;
+                const minutesLeft = Math.floor(timeDiff / 60000);
+                const secondsLeft = Math.floor((timeDiff % 60000) / 1000);
+                
+                document.getElementById('nextCheck').textContent = `Próxima vela H1 em: ${minutesLeft}:${secondsLeft.toString().padStart(2, '0')}`;
+            }
+            
+            // Initial update
+            updateDashboard();
+            
+            // Update every 5 seconds
+            setInterval(updateDashboard, 5000);
+            
+            // Tab functionality
+            const tabTriggers = [].slice.call(document.querySelectorAll('#myTab button'));
+            tabTriggers.forEach(function(trigger) {
+                trigger.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const target = document.querySelector(this.getAttribute('data-bs-target'));
+                    
+                    // Hide all tab panes
+                    document.querySelectorAll('.tab-pane').forEach(pane => {
+                        pane.classList.remove('show', 'active');
+                    });
+                    
+                    // Show target tab pane
+                    target.classList.add('show', 'active');
+                    
+                    // Update active tab
+                    tabTriggers.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Simulate robot activity indicator
+            const pulseElement = document.querySelector('.pulse');
+            setInterval(() => {
+                pulseElement.style.animation = 'none';
+                setTimeout(() => {
+                    pulseElement.style.animation = 'pulse 2s infinite';
+                }, 10);
+            }, 4000);
+        });
+    </script>
+</body>
+</html>
